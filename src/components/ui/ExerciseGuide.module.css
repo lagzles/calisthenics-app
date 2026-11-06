@@ -1,0 +1,81 @@
+.guide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.text {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-left: var(--space-5);
+  list-style: decimal;
+}
+
+.steps li {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+.note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated);
+}
+
+.noteLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.noteList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.noteList li {
+  position: relative;
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.noteList li::before {
+  content: '';
+  position: absolute;
+  top: 0.6em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-dim);
+}

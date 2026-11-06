@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="calisthenics-favicon-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#35e77a" />
+      <stop offset="1" stop-color="#12a94b" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="14" fill="url(#calisthenics-favicon-gradient)" />
+  <g stroke="#04160b" stroke-width="3.4" stroke-linecap="round">
+    <path d="M16 16.5v15M12.2 19v9M32 16.5v15M35.8 19v9M16 24h16" />
+  </g>
+</svg>

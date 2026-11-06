@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="200" height="140">
+  <title>Agachamento isométrico na parede</title>
+  <line x1="14" y1="128" x2="186" y2="128" stroke="#2c3b35" stroke-width="3" stroke-linecap="round" />
+  <!-- Parede -->
+  <line x1="44" y1="16" x2="44" y2="128" stroke="#2c3b35" stroke-width="6" stroke-linecap="round" />
+  <!-- Alinhamento (ângulo reto do joelho, guia verde) -->
+  <path d="M60 92 L100 92 L100 124" fill="none" stroke="#2fe06b" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" />
+  <!-- Figura apoiada na parede -->
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="62" cy="42" r="9" />
+    <path d="M62 51 L62 92" />
+    <path d="M62 62 L92 66" />
+    <path d="M62 92 L102 92" />
+    <path d="M102 92 L104 124" />
+    <path d="M104 124 L86 126" />
+  </g>
+</svg>

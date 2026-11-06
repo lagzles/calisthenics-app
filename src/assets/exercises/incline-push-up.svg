@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="200" height="140">
+  <title>Flexão com apoio</title>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2fe06b" />
+    </marker>
+  </defs>
+  <line x1="14" y1="128" x2="186" y2="128" stroke="#2c3b35" stroke-width="3" stroke-linecap="round" />
+  <!-- Apoio (banco/cadeira) -->
+  <rect x="24" y="92" width="54" height="10" rx="4" fill="none" stroke="#56675f" stroke-width="6" />
+  <path d="M32 102 L32 126 M70 102 L70 126" fill="none" stroke="#56675f" stroke-width="6" stroke-linecap="round" />
+  <!-- Posição final (corpo alto) -->
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M168 120 L98 90" />
+    <circle cx="88" cy="82" r="8" />
+    <path d="M98 90 L74 94" />
+  </g>
+  <!-- Posição inicial (corpo baixo) -->
+  <g fill="none" stroke="#56675f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M168 124 L106 104" />
+    <path d="M106 104 L74 94" />
+  </g>
+  <path d="M92 66 L92 88" fill="none" stroke="#2fe06b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)" />
+</svg>

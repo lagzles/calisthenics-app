@@ -1,0 +1,236 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandName {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.01em;
+}
+
+.brandTag {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.greetingTitle {
+  font-size: var(--fs-3xl);
+  letter-spacing: -0.02em;
+}
+
+.greetingSubtitle {
+  color: var(--color-text-muted);
+}
+
+.recommended {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow: hidden;
+  background-image: radial-gradient(
+      120% 120% at 100% 0%,
+      rgba(47, 224, 107, 0.18),
+      rgba(47, 224, 107, 0) 55%
+    ),
+    var(--gradient-surface);
+}
+
+.recommendedTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.workoutMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  color: var(--color-on-primary);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+}
+
+.recommendedName {
+  font-size: var(--fs-2xl);
+  letter-spacing: -0.02em;
+}
+
+.recommendedGoal {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.metaRow li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.metaRow svg {
+  color: var(--color-primary);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.summaryHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  font-size: var(--fs-md);
+}
+
+.summaryIcon {
+  color: var(--color-rest);
+}
+
+.summaryBody {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.summaryNumbers {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.summaryBig {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  color: var(--color-primary);
+}
+
+.summaryOf {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.weekDots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-3);
+}
+
+.dotDone {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.lastWorkout {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.lastIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+}
+
+.lastBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lastLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.lastValue {
+  font-weight: var(--fw-medium);
+}
+
+.lastMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.lastDuration {
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}
+
+.allLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}

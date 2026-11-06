@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Design tokens — Calisthenics App
+   Dark mode, mobile-first. Verde = exercício, âmbar = descanso.
+   ========================================================================== */
+
+:root {
+  /* Cores — superfícies */
+  --color-bg: #0a0f0d;
+  --color-bg-elevated: #0f1513;
+  --color-surface: #141c19;
+  --color-surface-2: #1b2622;
+  --color-surface-3: #24322c;
+  --color-border: #26332e;
+  --color-border-strong: #34463f;
+
+  /* Cores — texto */
+  --color-text: #eef4f1;
+  --color-text-muted: #9aaba4;
+  --color-text-dim: #6d7d77;
+
+  /* Cores — destaque exercício (verde) */
+  --color-primary: #2fe06b;
+  --color-primary-strong: #1fbe56;
+  --color-primary-soft: rgba(47, 224, 107, 0.12);
+  --color-primary-border: rgba(47, 224, 107, 0.35);
+  --color-on-primary: #04160b;
+
+  /* Cores — destaque descanso (âmbar) */
+  --color-rest: #ffb020;
+  --color-rest-strong: #e6930a;
+  --color-rest-soft: rgba(255, 176, 32, 0.12);
+  --color-rest-border: rgba(255, 176, 32, 0.35);
+  --color-on-rest: #1c1200;
+
+  /* Cores — estados */
+  --color-danger: #ff6b6b;
+  --color-success: #2fe06b;
+
+  /* Gradientes */
+  --gradient-brand: linear-gradient(135deg, #35e77a 0%, #12a94b 100%);
+  --gradient-surface: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 62%);
+
+  /* Espaçamentos */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+
+  /* Raios */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* Tipografia */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    system-ui, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.25rem;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 44px rgba(0, 0, 0, 0.45);
+
+  /* Layout */
+  --nav-height: 68px;
+  --content-max: 640px;
+
+  /* Movimento */
+  --transition-fast: 120ms ease;
+  --transition: 200ms ease;
+
+  color-scheme: dark;
+}

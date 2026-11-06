@@ -1,0 +1,14 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--content-max);
+  min-height: 100dvh;
+  margin: 0 auto;
+}
+
+.main {
+  flex: 1;
+  padding: var(--space-5) var(--space-4) 0;
+  padding-bottom: calc(var(--nav-height) + var(--space-8) + env(safe-area-inset-bottom));
+}

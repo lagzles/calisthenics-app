@@ -1,0 +1,24 @@
+.illustration {
+  display: block;
+  height: auto;
+  object-fit: contain;
+}
+
+.sm {
+  width: 40px;
+}
+
+.md {
+  width: 64px;
+}
+
+.lg {
+  width: min(280px, 84%);
+  max-width: 100%;
+}
+
+/* Tamanho da tela de execução: legível sem roubar espaço do temporizador. */
+.stage {
+  width: min(220px, 76%);
+  max-width: 100%;
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="200" height="140">
+  <title>Corrida estacionária</title>
+  <line x1="14" y1="128" x2="186" y2="128" stroke="#2c3b35" stroke-width="3" stroke-linecap="round" />
+  <!-- Figura correndo no lugar, com joelho elevado -->
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="88" cy="38" r="9" />
+    <path d="M88 47 L90 88" />
+    <path d="M89 58 L112 50 M89 58 L68 68" />
+    <path d="M90 88 L92 124" />
+    <path d="M90 88 L116 80 L122 100" />
+  </g>
+  <!-- Arcos de movimento (pé e braço) -->
+  <g fill="none" stroke="#2fe06b" stroke-width="3.5" stroke-linecap="round">
+    <path d="M118 110 Q134 116 146 108" />
+    <path d="M126 112 L142 110" marker-end="url(#motion)" />
+  </g>
+  <defs>
+    <marker id="motion" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L5 3 L0 6 Z" fill="#2fe06b" />
+    </marker>
+  </defs>
+</svg>

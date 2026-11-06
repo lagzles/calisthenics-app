@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="200" height="140">
+  <title>Elevação de pelve</title>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2fe06b" />
+    </marker>
+  </defs>
+  <line x1="14" y1="128" x2="186" y2="128" stroke="#2c3b35" stroke-width="3" stroke-linecap="round" />
+  <!-- Posição inicial (quadril no chão) -->
+  <g fill="none" stroke="#56675f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="34" cy="112" r="8" />
+    <path d="M42 116 L104 116 L136 96 L138 124" />
+  </g>
+  <!-- Posição final (quadril elevado) -->
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="34" cy="110" r="8" />
+    <path d="M44 118 L106 88" />
+    <path d="M106 88 L138 94 L138 124" />
+  </g>
+  <path d="M120 108 L120 86" fill="none" stroke="#2fe06b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)" />
+</svg>

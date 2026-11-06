@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="200" height="140">
+  <title>Prancha</title>
+  <line x1="14" y1="128" x2="186" y2="128" stroke="#2c3b35" stroke-width="3" stroke-linecap="round" />
+  <!-- Alinhamento corporal (guia verde) -->
+  <path d="M52 96 L174 112" fill="none" stroke="#2fe06b" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round" />
+  <!-- Figura em prancha sobre os antebraços -->
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="52" cy="94" r="9" />
+    <path d="M62 98 L108 104 L170 114" />
+    <path d="M62 100 L62 122" />
+    <path d="M62 122 L40 124" />
+    <path d="M170 114 L178 126" />
+  </g>
+  <path d="M96 122 L96 104" fill="none" stroke="#2fe06b" stroke-width="3.5" stroke-linecap="round" />
+</svg>

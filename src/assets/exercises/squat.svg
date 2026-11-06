@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="200" height="140">
+  <title>Agachamento livre</title>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2fe06b" />
+    </marker>
+  </defs>
+  <line x1="14" y1="128" x2="186" y2="128" stroke="#2c3b35" stroke-width="3" stroke-linecap="round" />
+  <g fill="none" stroke="#56675f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="58" cy="40" r="9" />
+    <path d="M58 49 L58 92" />
+    <path d="M58 62 L80 66" />
+    <path d="M58 92 L56 120" />
+    <path d="M58 92 L72 112 L70 124" />
+  </g>
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="150" cy="60" r="9" />
+    <path d="M148 69 L134 94" />
+    <path d="M144 76 L170 82" />
+    <path d="M134 94 L168 94" />
+    <path d="M168 94 L168 122" />
+    <path d="M134 94 L116 94 L116 122" />
+  </g>
+  <path d="M84 66 Q106 100 124 92" fill="none" stroke="#2fe06b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)" />
+</svg>

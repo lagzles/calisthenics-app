@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="200" height="140">
+  <title>Elevação de pernas deitado</title>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#2fe06b" />
+    </marker>
+  </defs>
+  <line x1="14" y1="128" x2="186" y2="128" stroke="#2c3b35" stroke-width="3" stroke-linecap="round" />
+  <!-- Tronco apoiado no chão -->
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="38" cy="110" r="9" />
+    <path d="M47 112 L102 114" />
+  </g>
+  <!-- Posição inicial (pernas baixas) -->
+  <g fill="none" stroke="#56675f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M102 114 L150 118" />
+  </g>
+  <!-- Posição final (pernas elevadas) -->
+  <g fill="none" stroke="#e2eee8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M102 114 L112 56" />
+  </g>
+  <path d="M140 104 Q152 78 128 60" fill="none" stroke="#2fe06b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)" />
+</svg>

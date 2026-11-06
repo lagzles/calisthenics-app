@@ -1,0 +1,585 @@
+/* ==========================================================================
+   Workout Mode — interface de execução (independente da navegação principal)
+   Verde = exercício · Âmbar = descanso · Verde-escuro = concluído
+   ========================================================================== */
+
+.mode {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--content-max);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  padding-top: max(env(safe-area-inset-top), var(--space-3));
+  padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom));
+  background: var(--color-bg);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Barra superior                                                              */
+/* -------------------------------------------------------------------------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) 0 var(--space-3);
+  background: linear-gradient(180deg, var(--color-bg) 70%, rgba(10, 15, 13, 0));
+}
+
+.topTitle {
+  flex: 1;
+  text-align: center;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.topButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 42px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.topButton:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+.topDanger:hover {
+  background: rgba(255, 107, 107, 0.14);
+  color: var(--color-danger);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Aviso de Wake Lock indisponível                                             */
+/* -------------------------------------------------------------------------- */
+
+.wakeWarning {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-rest-border);
+  border-radius: var(--radius-md);
+  background: var(--color-rest-soft);
+  color: var(--color-rest);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.wakeWarning span {
+  line-height: var(--lh-normal);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Conteúdo                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Palco do temporizador                                                       */
+/* -------------------------------------------------------------------------- */
+
+.stage {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.toneWork {
+  border-color: var(--color-primary-border);
+  background-image: radial-gradient(
+    120% 90% at 50% 0%,
+    rgba(47, 224, 107, 0.16),
+    rgba(47, 224, 107, 0) 62%
+  );
+}
+
+.toneRest {
+  border-color: var(--color-rest-border);
+  background-image: radial-gradient(
+    120% 90% at 50% 0%,
+    rgba(255, 176, 32, 0.16),
+    rgba(255, 176, 32, 0) 62%
+  );
+}
+
+.toneDone {
+  border-color: var(--color-primary-border);
+  background-image: radial-gradient(
+    120% 90% at 50% 0%,
+    rgba(47, 224, 107, 0.1),
+    rgba(47, 224, 107, 0) 62%
+  );
+}
+
+.stageHead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.stageFigure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 92px;
+  margin-top: var(--space-2);
+}
+
+.illustrationDone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+  color: var(--color-primary);
+}
+
+.stageName {
+  font-size: var(--fs-2xl);
+  letter-spacing: -0.02em;
+}
+
+.timer {
+  font-size: clamp(4.5rem, 30vw, 7.5rem);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary);
+}
+
+.toneRest .timer {
+  color: var(--color-rest);
+}
+
+.toneDone .timer {
+  color: var(--color-primary);
+}
+
+.timerPaused {
+  opacity: 0.4;
+}
+
+.repsTarget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) 0;
+}
+
+.repsValue {
+  font-size: clamp(4.5rem, 30vw, 7.5rem);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-primary);
+}
+
+.repsLabel {
+  font-size: var(--fs-md);
+  color: var(--color-text-muted);
+}
+
+.setInfo {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.progressTrack {
+  width: 100%;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-3);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  transition: width var(--transition);
+}
+
+.progressFill.toneRest {
+  background: var(--color-rest);
+}
+
+.hint {
+  max-width: 32ch;
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Ações                                                                       */
+/* -------------------------------------------------------------------------- */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: auto;
+  padding-top: var(--space-4);
+}
+
+.restRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.secondary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.secondary > * {
+  flex: 1;
+  min-width: 96px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Lista de exercícios                                                         */
+/* -------------------------------------------------------------------------- */
+
+.listView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.viewTitle {
+  font-size: var(--fs-lg);
+}
+
+.exerciseList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.exerciseRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  text-align: left;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.exerciseRow:hover {
+  background: var(--color-surface-2);
+}
+
+.exerciseRowCurrent {
+  border-color: var(--color-primary-border);
+}
+
+.stateActive {
+  border-color: var(--color-primary-border);
+}
+
+.stateResting {
+  border-color: var(--color-rest-border);
+}
+
+.stateCompleted {
+  opacity: 0.78;
+}
+
+.exerciseThumb {
+  flex-shrink: 0;
+}
+
+.exerciseNumber {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+}
+
+.stateCompleted .exerciseNumber {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.exerciseInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.exerciseName {
+  font-weight: var(--fw-semibold);
+}
+
+.exerciseMeta {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Detalhe do exercício                                                        */
+/* -------------------------------------------------------------------------- */
+
+.detailView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.detailHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.detailFigure {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+}
+
+.detailIndex {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.detailName {
+  font-size: var(--fs-xl);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.instructions {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+.note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated);
+}
+
+.noteLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.noteList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.noteList li {
+  position: relative;
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.noteList li::before {
+  content: '';
+  position: absolute;
+  top: 0.6em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-dim);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Conclusão                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.completion {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-7) var(--space-4);
+  text-align: center;
+}
+
+.completionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.completionTitle {
+  font-size: var(--fs-2xl);
+  letter-spacing: -0.02em;
+}
+
+.completionName {
+  color: var(--color-text-muted);
+}
+
+.completionStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.completionDate {
+  color: var(--color-text-dim);
+  font-size: var(--fs-sm);
+}
+
+.completionActions {
+  width: 100%;
+  margin-top: auto;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Mensagens (carregando / erro)                                               */
+/* -------------------------------------------------------------------------- */
+
+.message {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.messageText {
+  color: var(--color-text-muted);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Diálogo de abandono                                                         */
+/* -------------------------------------------------------------------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background: rgba(4, 8, 6, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 420px;
+}
+
+.dialogTitle {
+  font-size: var(--fs-xl);
+}
+
+.dialogText {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
