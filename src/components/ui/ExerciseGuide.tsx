@@ -1,27 +1,65 @@
 import type { Exercise } from '../../features/workouts/domain/types'
 import styles from './ExerciseGuide.module.css'
 
+interface ExerciseGuideProps {
+  exercise: Exercise
+  /**
+   * Versão resumida, usada durante o treino: mantém a ordem das seções, mas
+   * sem o bloco de "Como executar" em prosa — o aluno precisa da orientação
+   * rápida, não de um texto longo.
+   */
+  compact?: boolean
+}
+
 /**
  * Orientação de execução de um exercício.
  *
- * Reúne "Como executar" (explicação curta + passos), "Dica" (cuidado
- * importante), "Adaptação" (alternativa mais fácil) e "Erros comuns". Usado na
- * consulta do exercício e na tela do treino, mantendo a linguagem consistente.
+ * Reúne "Como executar" (explicação curta + passos), "Posição inicial",
+ * "Respiração", "Dicas de postura", "Dica" (cuidado importante), "Adaptação"
+ * (alternativa mais fácil) e "Erros comuns". Usado na consulta do exercício e
+ * na tela do treino, mantendo a linguagem consistente.
  */
-export function ExerciseGuide({ exercise }: { exercise: Exercise }) {
+export function ExerciseGuide({ exercise, compact = false }: ExerciseGuideProps) {
   return (
     <div className={styles.guide}>
-      <div className={styles.section}>
-        <span className={styles.label}>Como executar</span>
-        <p className={styles.text}>{exercise.instructions}</p>
-        {exercise.steps && exercise.steps.length > 0 && (
-          <ol className={styles.steps}>
-            {exercise.steps.map((step) => (
-              <li key={step}>{step}</li>
+      {!compact && (
+        <div className={styles.section}>
+          <span className={styles.label}>Como executar</span>
+          <p className={styles.text}>{exercise.instructions}</p>
+          {exercise.steps && exercise.steps.length > 0 && (
+            <ol className={styles.steps}>
+              {exercise.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          )}
+        </div>
+      )}
+
+      {exercise.startPosition && (
+        <div className={styles.section}>
+          <span className={styles.label}>Posição inicial</span>
+          <p className={styles.text}>{exercise.startPosition}</p>
+        </div>
+      )}
+
+      {exercise.breathing && (
+        <div className={styles.section}>
+          <span className={styles.label}>Respiração</span>
+          <p className={styles.text}>{exercise.breathing}</p>
+        </div>
+      )}
+
+      {exercise.posture && exercise.posture.length > 0 && (
+        <div className={styles.section}>
+          <span className={styles.label}>Dicas de postura</span>
+          <ul className={styles.noteList}>
+            {exercise.posture.map((item) => (
+              <li key={item}>{item}</li>
             ))}
-          </ol>
-        )}
-      </div>
+          </ul>
+        </div>
+      )}
 
       {exercise.tip && (
         <div className={styles.note}>

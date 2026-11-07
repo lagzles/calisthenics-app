@@ -1,0 +1,112 @@
+/* ==========================================================================
+   Panda Personal Trainer — o mascote
+   ========================================================================== */
+
+.mascot {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  transform-origin: 50% 88%;
+  will-change: transform;
+}
+
+.rig {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Tamanhos                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.sm {
+  width: 64px;
+  height: 64px;
+}
+
+.md {
+  width: 104px;
+  height: 104px;
+}
+
+.lg {
+  width: 160px;
+  height: 160px;
+}
+
+.xl {
+  width: 220px;
+  height: 220px;
+}
+
+.stage {
+  width: min(200px, 58%);
+  height: min(200px, 58%);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Movimentos leves de personalidade                                          */
+/* -------------------------------------------------------------------------- */
+
+/* Respiração — o slowed down do personagem em espera ou descanso. */
+.breathe {
+  animation: panda-breathe 3.4s ease-in-out infinite alternate;
+}
+
+/* Impulso curto — prontidão, incentivo e sequência. */
+.bounce {
+  animation: panda-bounce 1.1s ease-in-out infinite;
+}
+
+/* Saudação — balanço leve do tronco. */
+.wave {
+  animation: panda-wave 1.6s ease-in-out infinite;
+}
+
+/* Comemoração — salto curto com inclinação. */
+.celebrate {
+  animation: panda-celebrate 0.9s ease-in-out infinite;
+}
+
+@keyframes panda-breathe {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes panda-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes panda-wave {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@keyframes panda-celebrate {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  40% {
+    transform: translateY(-9px) rotate(1.5deg);
+  }
+  70% {
+    transform: translateY(0) rotate(0deg);
+  }
+}

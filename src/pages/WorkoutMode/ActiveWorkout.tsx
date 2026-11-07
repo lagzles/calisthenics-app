@@ -17,6 +17,9 @@ import {
   XIcon,
 } from '../../components/ui/icons'
 import { Stat } from '../../components/ui/Stat'
+import { PandaDemoPlayer } from '../../features/panda/components/PandaDemoPlayer'
+import { PandaMascot } from '../../features/panda/components/PandaMascot'
+import { getExercisePandaDemo } from '../../features/panda/domain/pandaCatalog'
 import type { Workout, WorkoutEvent, WorkoutSession } from '../../features/workouts/domain/types'
 import { describeExerciseTarget, describeModality } from '../../features/workouts/format'
 import { useWorkoutSession } from '../../features/workouts/hooks/useWorkoutSession'
@@ -265,12 +268,15 @@ function TimerScreen({
   onRequestAdvance,
   onPrevious,
 }: TimerScreenProps) {
+  const [guideOpen, setGuideOpen] = useState(false)
   const isResting = vm.tone === 'rest'
   const isDone = vm.tone === 'done'
 
   const toneClass = isResting ? styles.toneRest : isDone ? styles.toneDone : styles.toneWork
   const badgeVariant = isResting ? 'rest' : isDone ? 'neutral' : 'primary'
   const has = (id: WorkoutControlId) => controls.includes(id)
+
+  const demo = vm.exercise ? getExercisePandaDemo(vm.exercise) : null
 
   return (
     <div className={cx(styles.stage, toneClass)}>
@@ -284,12 +290,33 @@ function TimerScreen({
           <div className={styles.illustrationDone} aria-hidden="true">
             {isDone && <CheckIcon size={44} />}
           </div>
+        ) : isResting ? (
+          <PandaMascot state="rest" size="stage" label="Panda descansando" />
+        ) : demo ? (
+          <PandaDemoPlayer
+            key={demo.key}
+            track={demo}
+            title={vm.exerciseName}
+            autoPlay
+            paused={isPaused}
+            compact
+          />
         ) : (
-          <ExerciseIllustration exercise={vm.exercise} size="stage" />
+          <PandaMascot state="idle" size="stage" label="Panda" />
         )}
       </div>
 
-      <h1 className={styles.stageName}>{vm.exerciseName}</h1>
+      <div className={styles.stageTitle}>
+        <h1 className={styles.stageName}>{vm.exerciseName}</h1>
+        {vm.exercise && (
+          <ExerciseIllustration
+            exercise={vm.exercise}
+            size="sm"
+            className={styles.stageThumb}
+            alt={`Esquema do movimento: ${vm.exerciseName}`}
+          />
+        )}
+      </div>
 
       {vm.timerText !== null ? (
         <div className={cx(styles.timer, isPaused && styles.timerPaused)}>{vm.timerText}</div>
@@ -312,6 +339,28 @@ function TimerScreen({
       </div>
 
       <p className={styles.hint}>{vm.message}</p>
+
+      {vm.exercise && (
+        <div className={styles.guide}>
+          <button
+            type="button"
+            className={styles.guideToggle}
+            onClick={() => setGuideOpen((open) => !open)}
+            aria-expanded={guideOpen}
+          >
+            Orientações do panda
+            <span className={cx(styles.guideChevron, guideOpen && styles.guideChevronOpen)}>
+              <ChevronRightIcon size={16} />
+            </span>
+          </button>
+
+          {guideOpen && (
+            <div className={styles.guidePanel}>
+              <ExerciseGuide exercise={vm.exercise} compact />
+            </div>
+          )}
+        </div>
+      )}
 
       <div className={styles.actions}>
         {has('extend10') && (
@@ -463,6 +512,8 @@ function ExerciseDetailView({ workout, index, onBack }: ExerciseDetailViewProps)
   const exercise = workout.exercises[index]
   if (!exercise) return null
 
+  const demo = getExercisePandaDemo(exercise)
+
   return (
     <div className={styles.detailView}>
       <div className={styles.detailHead}>
@@ -482,6 +533,16 @@ function ExerciseDetailView({ workout, index, onBack }: ExerciseDetailViewProps)
         <Badge variant="neutral">{describeExerciseTarget(exercise)}</Badge>
         <Badge variant="rest">Descanso {formatSeconds(exercise.restDuration)}</Badge>
       </div>
+
+      {demo ? (
+        <PandaDemoPlayer key={demo.key} track={demo} title={exercise.name} />
+      ) : (
+        exercise.demoUnavailableReason && (
+          <p className={styles.detailLimitation}>
+            Sem demonstração visual para este movimento: {exercise.demoUnavailableReason}
+          </p>
+        )
+      )}
 
       <ExerciseGuide exercise={exercise} />
 
@@ -528,6 +589,13 @@ function CompletionScreen({ workout, session }: CompletionScreenProps) {
         <span className={styles.completionIcon}>
           <CheckIcon size={48} />
         </span>
+
+        <PandaMascot
+          state="celebrating"
+          size="xl"
+          className={styles.completionMascot}
+          label="Panda comemorando o treino concluído"
+        />
 
         <div>
           <h1 className={styles.completionTitle}>Treino concluído!</h1>

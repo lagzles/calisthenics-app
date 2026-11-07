@@ -3,6 +3,8 @@ import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { LogoMark } from '../../components/ui/Logo'
+import { PandaMascot } from '../../features/panda/components/PandaMascot'
+import type { PandaState } from '../../features/panda/domain/pandaTypes'
 import {
   ArrowRightIcon,
   CalendarIcon,
@@ -24,6 +26,14 @@ export function HomePage() {
   const totalSets = recommended.exercises.reduce((total, exercise) => total + exercise.sets, 0)
   const lastWorkoutSummary = summary.lastWorkout
 
+  // O panda acompanha o progresso da semana: sai da saudação para a
+  // comemoração quando a meta semanal é batida.
+  const goalReached = summary.weeklyWorkoutsCompleted >= summary.weeklyWorkoutsGoal
+  const greetingState: PandaState = goalReached ? 'streak' : 'welcome'
+  const greetingMessage = goalReached
+    ? `Meta da semana batida: ${summary.weeklyWorkoutsCompleted} treinos. Bora manter?`
+    : 'Pronto para se movimentar hoje?'
+
   // Abre a preparação do treino; o início (e o áudio) acontecem lá.
   const startWorkout = (workoutId: string) => {
     navigate(`/treino/${workoutId}`)
@@ -42,8 +52,17 @@ export function HomePage() {
       </header>
 
       <section className={styles.greeting}>
-        <h1 className={styles.greetingTitle}>Olá! 👋</h1>
-        <p className={styles.greetingSubtitle}>Pronto para se movimentar hoje?</p>
+        <div className={styles.greetingMascot}>
+          <PandaMascot
+            state={greetingState}
+            size="lg"
+            label={greetingState === 'streak' ? 'Panda comemorando a sequência' : 'Panda saudando'}
+          />
+        </div>
+        <div className={styles.greetingText}>
+          <h1 className={styles.greetingTitle}>Olá! 👋</h1>
+          <p className={styles.greetingSubtitle}>{greetingMessage}</p>
+        </div>
       </section>
 
       <Card variant="accent" className={styles.recommended}>

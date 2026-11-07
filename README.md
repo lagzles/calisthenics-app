@@ -30,6 +30,10 @@ histórico fica no próprio dispositivo.
   complete!", "Workout complete!") via síntese de voz nativa (offline).
 - **Ilustrações** — SVGs locais que demonstram cada movimento (sem imagens
   externas).
+- **Panda Personal Trainer** — um mascote vetorial que apresenta cada
+  exercício, **demonstra o movimento** do panda (com pausa e repetição),
+  orienta postura e respiração, avisa sobre erros comuns e comemora o treino
+  concluído.
 - **Histórico local** — treinos concluídos, séries por exercício, duração e
   resumo semanal, salvos no IndexedDB do dispositivo.
 - **Instalação como PWA** — "Adicionar à tela inicial" abre o app em modo
@@ -126,6 +130,8 @@ Settings → Pages → Source = **GitHub Actions**. Os detalhes estão em
 - Os **avisos sonoros** usam a síntese de voz do navegador (podem variar por
   dispositivo) e exigem uma interação inicial do usuário.
 - As **ilustrações** são representações esquemáticas (não fotos/3D).
+- A **demonstração do panda** é um rig 2D em vista de perfil: complementa a
+  explicação textual, mas não substitui um vídeo ou um modelo 3D.
 - O histórico fica **restrito ao dispositivo** onde o treino foi feito.
 
 ## Documentação
@@ -138,3 +144,5 @@ A fonte de verdade do projeto está em `docs/`:
 - [`docs/03-workout-engine.md`](docs/03-workout-engine.md) — motor de execução e persistência.
 - [`docs/04-workout-mode-implementation.md`](docs/04-workout-mode-implementation.md) — Workout Mode, áudio, Wake Lock e integração Home/Histórico.
 - [`docs/05-release-preparation.md`](docs/05-release-preparation.md) — auditoria e preparação do primeiro lançamento.
+- [`docs/06-panda-personal-trainer.md`](docs/06-panda-personal-trainer.md) — feature de mascote panda como personal trainer.
+- [`docs/07-panda-personal-trainer-implementation.md`](docs/07-panda-personal-trainer-implementation.md) — implementação do Panda Personal Trainer (rig, demonstrações, integração e testes).

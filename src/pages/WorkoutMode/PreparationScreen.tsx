@@ -7,6 +7,8 @@ import { ArrowLeftIcon, ClockIcon, LayersIcon, PlayIcon, TargetIcon } from '../.
 import type { Workout } from '../../features/workouts/domain/types'
 import { describeExerciseTarget } from '../../features/workouts/format'
 import { countTotalSets } from '../../features/workouts/domain/workoutSelectors'
+import { PandaDemoPlayer } from '../../features/panda/components/PandaDemoPlayer'
+import { getExercisePandaDemo } from '../../features/panda/domain/pandaCatalog'
 import { formatMinutes } from '../../utils/format'
 import styles from './PreparationScreen.module.css'
 
@@ -31,6 +33,7 @@ export function PreparationScreen({ workout, onStart, onBack }: PreparationScree
 
   const firstExercise = workout.exercises[0]
   const totalSets = countTotalSets(workout)
+  const firstDemo = firstExercise ? getExercisePandaDemo(firstExercise) : null
 
   const handleStart = useCallback(() => {
     if (starting) return
@@ -78,9 +81,24 @@ export function PreparationScreen({ workout, onStart, onBack }: PreparationScree
             <h2 className={styles.firstName}>{firstExercise.name}</h2>
           </div>
 
-          <div className={styles.firstFigure}>
-            <ExerciseIllustration exercise={firstExercise} size="lg" />
-          </div>
+          {firstDemo ? (
+            <PandaDemoPlayer
+              key={firstDemo.key}
+              track={firstDemo}
+              title={firstExercise.name}
+              className={styles.firstDemo}
+            />
+          ) : (
+            <div className={styles.firstFigure}>
+              <ExerciseIllustration exercise={firstExercise} size="lg" />
+            </div>
+          )}
+
+          {firstExercise.demoUnavailableReason && (
+            <p className={styles.firstLimitation}>
+              Sem demonstração visual para este movimento: {firstExercise.demoUnavailableReason}
+            </p>
+          )}
 
           <p className={styles.firstDescription}>{firstExercise.instructions}</p>
 

@@ -202,3 +202,12 @@ export function AlertIcon(props: IconProps) {
     </Svg>
   )
 }
+
+export function ReplayIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+      <path d="M20.2 4.2v4.4h-4.4" />
+    </Svg>
+  )
+}

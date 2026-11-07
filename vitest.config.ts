@@ -9,7 +9,12 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    // Os testes de componente declaram `// @vitest-environment jsdom` no
+    // próprio arquivo; o restante da suíte continua em Node puro.
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     setupFiles: ['./src/test/setup.ts'],
+    // Garante o build de desenvolvimento do React (`React.act`), mesmo em
+    // máquinas com NODE_ENV=production no ambiente.
+    env: { NODE_ENV: 'test' },
   },
 })
