@@ -45,6 +45,15 @@ const treinoAExercises: Exercise[] = [
       'Suba empurrando o chão até voltar à posição inicial.',
     ],
     tip: 'Mantenha o peso nos calcanhares e o peito aberto durante toda a descida.',
+    startPosition:
+      'De pé, com os pés na largura dos ombros e as pontas levemente abertas para fora, com o peso distribuído em todo o pé.',
+    breathing:
+      'Inspire ao subir e expire ao descer; continue respirando normalmente e não prenda o ar.',
+    posture: [
+      'Tronco ereto, com o peito aberto e as costelas para baixo.',
+      'Joelhos apontando na mesma direção das pontas dos pés, sem cruzar para dentro.',
+      'Quadril descendo entre as pernas, com o peso apoiado nos calcanhares.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -66,6 +75,15 @@ const treinoAExercises: Exercise[] = [
       'Empurre o apoio e volte à posição inicial.',
     ],
     tip: 'Contraia o abdômen para não deixar o quadril cair.',
+    startPosition:
+      'De frente para o apoio, com as mãos um pouco mais largas que os ombros e o corpo em linha reta da cabeça aos calcanhares.',
+    breathing:
+      'Inspire na descida e expire ao empurrar o apoio de volta, sem prender a respiração.',
+    posture: [
+      'Corpo em linha reta: cabeça, quadril e calcanhares alinhados.',
+      'Cotovelos apontando para trás, a cerca de 45° do tronco.',
+      'Abdômen contraído, com o quadril nivelado e o pescoço em linha com a coluna.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -87,6 +105,15 @@ const treinoAExercises: Exercise[] = [
       'Desça controladamente, sem relaxar totalmente.',
     ],
     tip: 'Suba pelo glúteo, evitando arquear a lombar.',
+    startPosition:
+      'Deitado de costas, com os joelhos flexionados, os pés apoiados no chão na largura do quadril e os braços ao lado do corpo.',
+    breathing:
+      'Expire ao elevar o quadril e inspire ao descer; mantenha a respiração durante a subida.',
+    posture: [
+      'Eleve contraindo os glúteos, sem arquear a lombar.',
+      'Pés firmes no chão e joelhos paralelos entre si.',
+      'Na posição alta, o quadril fica alinhado com o ombro e o joelho.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -107,6 +134,15 @@ const treinoAExercises: Exercise[] = [
       'Contraia abdômen e glúteos e respire normalmente.',
     ],
     tip: 'Mantenha o quadril neutro — nem alto demais, nem caído.',
+    startPosition:
+      'De joelhos, apoie os antebraços no chão alinhados abaixo dos ombros e estenda as pernas para trás.',
+    breathing:
+      'Respire normalmente e de forma contínua, sem prender o ar nem fazer apneias.',
+    posture: [
+      'Cabeça, quadril e calcanhares em uma linha reta.',
+      'Abdômen e glúteos contraídos, com o quadril neutro.',
+      'Cotovelos sob os ombros, sem pressionar o pescoço.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -128,6 +164,15 @@ const treinoAExercises: Exercise[] = [
       'Mantenha um ritmo constante durante todo o tempo.',
     ],
     tip: 'Aterrisse com os joelhos levemente flexionados para absorver o impacto.',
+    startPosition:
+      'De pé, com os pés juntos e os braços ao lado do corpo.',
+    breathing:
+      'Inspire ao fechar as pernas e expire ao abri-las, mantendo um ritmo constante.',
+    posture: [
+      'Aterrisse com o peso na ponta dos pés e os joelhos levemente flexionados.',
+      'Braços acompanhando as pernas, sem ultrapassar a altura da cabeça.',
+      'Coluna ereta durante todo o movimento.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -152,6 +197,15 @@ const treinoBExercises: Exercise[] = [
       'Mantenha os braços em movimento e a respiração constante.',
     ],
     tip: 'Apoie o pé inteiro no chão; evite bater os calcanhares.',
+    startPosition:
+      'De pé, com o tronco ereto e os braços ao lado do corpo.',
+    breathing:
+      'Respire de forma ritmada, sem prender o ar, mantendo o ritmo da passada.',
+    posture: [
+      'Apoie o pé inteiro no chão, sem bater os calcanhares.',
+      'Tronco ereto e olhar para a frente, sem inclinar o pescoço.',
+      'Braços dobrados acompanhando o ritmo das pernas.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -173,6 +227,15 @@ const treinoBExercises: Exercise[] = [
       'Segure a posição pelo tempo indicado, respirando normalmente.',
     ],
     tip: 'Mantenha os joelhos alinhados com os pés, sem passar das pontas.',
+    startPosition:
+      'De pé, de costas para a parede, com os pés um pouco à frente e afastados na largura do quadril.',
+    breathing:
+      'Mantenha a respiração contínua durante todo o tempo; nunca prenda o ar.',
+    posture: [
+      'Costas e cabeça apoiadas na parede.',
+      'Joelhos a 90°, na mesma linha dos pés e sem passar da ponta dos pés.',
+      'Peso distribuído entre os calcanhares e a ponta dos pés.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -194,6 +257,15 @@ const treinoBExercises: Exercise[] = [
       'Desça devagar, sem deitar totalmente.',
     ],
     tip: 'Expire ao subir e evite forçar o pescoço.',
+    startPosition:
+      'Sentado, com os pés apoiados no chão, as pernas flexionadas e os braços estendidos à frente.',
+    breathing:
+      'Expire ao subir o tronco e inspire ao descer, sem forçar o pescoço.',
+    posture: [
+      'Suba aproximando o peito dos joelhos, sem descer totalmente.',
+      'Coluna neutra, sem arredondar as costas.',
+      'Braços estendidos, sem se impulsionar para trás.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -215,6 +287,15 @@ const treinoBExercises: Exercise[] = [
       'Desça devagar sem tocar o chão.',
     ],
     tip: 'Use o abdômen para mover as pernas, sem arquear a lombar.',
+    startPosition:
+      'Deitado de costas, com as mãos ao lado do corpo e as pernas estendidas no chão.',
+    breathing:
+      'Expire ao elevar as pernas e inspire ao descer; não retenha a respiração.',
+    posture: [
+      'Lombar apoiada no chão, sem arquear.',
+      'Pernas estendidas, com os joelhos levemente flexionados se houver tensão na lombar.',
+      'O movimento vem do abdômen, sem embalo.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,
@@ -236,6 +317,15 @@ const treinoBExercises: Exercise[] = [
       'Contraia abdômen e glúteos e respire normalmente.',
     ],
     tip: 'Mantenha o quadril neutro — nem alto demais, nem caído.',
+    startPosition:
+      'De joelhos, com os antebraços no chão alinhados abaixo dos ombros e as pernas estendidas para trás.',
+    breathing:
+      'Respire de forma contínua e regular, sem prender o ar durante a isometria.',
+    posture: [
+      'Cabeça, quadril e calcanhares em uma linha reta.',
+      'Abdômen e glúteos contraídos, sem elevar nem baixar o quadril.',
+      'Olhar para o chão, com o pescoço em linha com a coluna.',
+    ],
     executionType: 'timed',
     sets: 3,
     workDuration: 40,

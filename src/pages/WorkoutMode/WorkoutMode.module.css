@@ -163,6 +163,77 @@
   margin-top: var(--space-2);
 }
 
+.stageTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+/* Miniatura do stick figure — apoio complementar, não protagonista. */
+.stageThumb {
+  opacity: 0.75;
+}
+
+.guide {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--space-2);
+}
+
+.guideToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 42px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.guideToggle:hover {
+  color: var(--color-text);
+  border-color: var(--color-primary-border);
+}
+
+.guideChevron {
+  display: inline-flex;
+  transition: transform var(--transition-fast);
+}
+
+.guideChevronOpen {
+  transform: rotate(90deg);
+}
+
+.guidePanel {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  text-align: left;
+}
+
+.detailLimitation {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-rest-border);
+  background: var(--color-rest-soft);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.completionMascot {
+  align-self: center;
+}
+
 .illustrationDone {
   display: flex;
   align-items: center;

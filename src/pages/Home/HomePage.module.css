@@ -34,8 +34,29 @@
 
 .greeting {
   display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.greetingMascot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 108px;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(110% 90% at 50% 110%, rgba(47, 224, 107, 0.16), rgba(47, 224, 107, 0) 65%),
+    var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.greetingText {
+  display: flex;
   flex-direction: column;
   gap: var(--space-1);
+  min-width: 0;
 }
 
 .greetingTitle {

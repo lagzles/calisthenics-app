@@ -56,6 +56,18 @@ export interface Exercise {
   steps?: string[]
   /** Dica — um cuidado importante para executar corretamente. */
   tip?: string
+  /** Posição inicial — onde o corpo está antes de começar o movimento. */
+  startPosition?: string
+  /** Orientação de respiração durante o exercício. */
+  breathing?: string
+  /** Dicas de postura e alinhamento corporal. */
+  posture?: string[]
+  /**
+   * Limitação da demonstração visual, quando o movimento não pode ser
+   * representado com fidelidade. A interface passa a oferecer a alternativa
+   * estática e explica o motivo ao usuário. Ausente quando há demonstração.
+   */
+  demoUnavailableReason?: string
   executionType: ExecutionType
   /** Quantidade de séries. */
   sets: number

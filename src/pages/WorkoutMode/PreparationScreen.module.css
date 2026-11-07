@@ -104,6 +104,19 @@
   background: var(--color-bg-elevated);
 }
 
+.firstDemo {
+  margin: 0 calc(var(--space-3) * -1);
+}
+
+.firstLimitation {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-rest-border);
+  background: var(--color-rest-soft);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
 .firstDescription {
   color: var(--color-text-muted);
   font-size: var(--fs-sm);
