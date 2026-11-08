@@ -1,114 +1,116 @@
 import { useMemo, useState } from 'react'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { Card } from '../../components/ui/Card'
-import { EmptyState } from '../../components/ui/EmptyState'
 import { Stat } from '../../components/ui/Stat'
-import { CheckIcon, ChevronRightIcon, HistoryIcon } from '../../components/ui/icons'
 import { useHistoryData } from '../../features/workouts/hooks/useHistoryData'
-import { getWorkoutById } from '../../services/workoutService'
-import { cx } from '../../utils/cx'
-import { formatDateTime, formatMinutes } from '../../utils/format'
+import {
+  addMonths,
+  buildHistoryIndicators,
+  groupSessionsByDate,
+  isDayInMonth,
+  latestSessionDayInMonth,
+  monthLabel,
+  monthOf,
+  toLocalDateKey,
+  type CalendarMonth,
+} from '../../features/workouts/historyCalendar'
+import { HistoryCalendar } from './HistoryCalendar'
+import { HistoryDaySessions } from './HistoryDaySessions'
 import styles from './HistoryPage.module.css'
 
 /**
- * Tela de histórico.
+ * Tela de histórico com calendário mensal.
  *
- * Exibe apenas sessões **concluídas** (vindas do IndexedDB). Cada sessão pode ser
- * expandida para consultar as séries realizadas exercício a exercício.
+ * Todos os números e destaques derivam das sessões reais concluídas no
+ * IndexedDB (`useHistoryData`). A navegação entre meses e a seleção de dias são
+ * estado local da página — nenhuma recarga da aplicação.
  */
 export function HistoryPage() {
-  const { loading, summary, items, sessions } = useHistoryData()
-  const [openId, setOpenId] = useState<string | null>(null)
+  const { loading, sessions } = useHistoryData()
+  const [now] = useState(() => Date.now())
+  const todayKey = useMemo(() => toLocalDateKey(now) ?? '', [now])
+  const [month, setMonth] = useState<CalendarMonth>(() => monthOf(now))
+  const [selectedDay, setSelectedDay] = useState<string | null>(todayKey)
 
-  const sessionsById = useMemo(
-    () => new Map(sessions.map((session) => [session.id, session])),
-    [sessions],
+  const sessionsByDate = useMemo(() => groupSessionsByDate(sessions), [sessions])
+
+  const sessionCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const [dateKey, daySessions] of sessionsByDate) {
+      counts.set(dateKey, daySessions.length)
+    }
+    return counts
+  }, [sessionsByDate])
+
+  const indicators = useMemo(
+    () => buildHistoryIndicators(sessions, month, todayKey),
+    [sessions, month, todayKey],
   )
+
+  const monthHasSessions = useMemo(
+    () => [...sessionsByDate.keys()].some((dateKey) => isDayInMonth(dateKey, month)),
+    [sessionsByDate, month],
+  )
+
+  const selectedSessions = selectedDay ? (sessionsByDate.get(selectedDay) ?? []) : []
+
+  const changeMonth = (delta: number) => {
+    const nextMonth = addMonths(month, delta)
+    setMonth(nextMonth)
+    setSelectedDay(latestSessionDayInMonth(sessionsByDate, nextMonth))
+  }
+
+  const streakHint =
+    indicators.currentStreak === 0
+      ? 'sem dias seguidos'
+      : indicators.currentStreak === 1
+        ? 'dia consecutivo'
+        : 'dias consecutivos'
 
   return (
     <div className={styles.page}>
-      <PageHeader title="Histórico" subtitle="Acompanhe seus treinos concluídos." />
+      <PageHeader
+        title="Histórico"
+        subtitle="Acompanhe seus treinos concluídos, dia a dia."
+      />
 
       <Card className={styles.statsCard}>
-        <Stat label="Treinos concluídos" value={String(summary.totalWorkouts)} />
-        <Stat label="Nesta semana" value={String(summary.weeklyWorkouts)} />
-        <Stat label="Tempo total" value={formatMinutes(summary.totalMinutes)} />
+        <Stat
+          label="Total de treinos"
+          value={String(indicators.totalWorkouts)}
+          hint="sessões concluídas"
+        />
+        <Stat
+          label="Sequência atual"
+          value={String(indicators.currentStreak)}
+          hint={streakHint}
+        />
+        <Stat
+          label="Treinos no mês"
+          value={String(indicators.monthWorkouts)}
+          hint={monthLabel(month)}
+        />
       </Card>
 
-      {loading && <p className={styles.loading}>Carregando histórico…</p>}
+      <HistoryCalendar
+        month={month}
+        todayKey={todayKey}
+        selectedDay={selectedDay}
+        sessionCounts={sessionCounts}
+        onSelectDay={setSelectedDay}
+        onPreviousMonth={() => changeMonth(-1)}
+        onNextMonth={() => changeMonth(1)}
+      />
 
-      {!loading && items.length === 0 && (
-        <EmptyState
-          icon={<HistoryIcon size={26} />}
-          title="Seu histórico aparecerá aqui"
-          description="Quando você concluir um treino, ele será registrado nesta tela."
+      {loading ? (
+        <p className={styles.loading}>Carregando histórico…</p>
+      ) : (
+        <HistoryDaySessions
+          selectedDay={selectedDay}
+          sessions={selectedSessions}
+          month={month}
+          monthHasSessions={monthHasSessions}
         />
-      )}
-
-      {items.length > 0 && (
-        <ul className={styles.list}>
-          {items.map((item) => {
-            const session = sessionsById.get(item.id)
-            const workout = getWorkoutById(item.workoutId)
-            const isOpen = openId === item.id
-
-            return (
-              <li key={item.id}>
-                <Card className={styles.sessionCard}>
-                  <button
-                    type="button"
-                    className={styles.sessionHead}
-                    onClick={() => setOpenId(isOpen ? null : item.id)}
-                    aria-expanded={isOpen}
-                  >
-                    <span className={styles.sessionMark}>{item.workoutId}</span>
-
-                    <span className={styles.sessionInfo}>
-                      <span className={styles.sessionName}>{item.workoutName}</span>
-                      <span className={styles.sessionDate}>{formatDateTime(item.finishedAt)}</span>
-                    </span>
-
-                    <span className={styles.sessionMeta}>
-                      <span className={styles.sessionDuration}>
-                        {formatMinutes(item.durationMinutes)}
-                      </span>
-                      <span className={styles.sessionCounts}>
-                        {item.exercisesCompleted}/{item.exercisesTotal} exercícios ·{' '}
-                        {item.setsCompleted} séries
-                      </span>
-                    </span>
-
-                    <ChevronRightIcon
-                      size={18}
-                      className={cx(styles.chevron, isOpen && styles.chevronOpen)}
-                    />
-                  </button>
-
-                  {isOpen && session && (
-                    <ul className={styles.sessionDetail}>
-                      {session.exercisesProgress.map((progress, index) => {
-                        const exercise = workout?.exercises[index]
-                        return (
-                          <li key={progress.exerciseId} className={styles.detailRow}>
-                            <span className={styles.detailName}>
-                              {exercise?.name ?? progress.exerciseId}
-                            </span>
-                            <span className={styles.detailSets}>
-                              {progress.completedSets}/{exercise?.sets ?? '?'} séries
-                            </span>
-                            {progress.completed && (
-                              <CheckIcon size={16} className={styles.detailCheck} />
-                            )}
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  )}
-                </Card>
-              </li>
-            )
-          })}
-        </ul>
       )}
     </div>
   )

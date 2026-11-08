@@ -35,3 +35,11 @@ export function formatDateTime(iso: string | null | undefined): string {
   const time = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
   return `${day} · ${time}`
 }
+
+/** Horário local a partir de uma string ISO (ex.: "18:32"). */
+export function formatTime(iso: string | null | undefined): string {
+  if (!iso) return ''
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return ''
+  return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+}
