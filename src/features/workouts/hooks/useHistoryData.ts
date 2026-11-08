@@ -1,37 +1,21 @@
 import { useEffect, useState } from 'react'
 import { listCompletedSessions } from '../data/workoutRepository'
 import type { WorkoutSession } from '../domain/types'
-import {
-  buildHistorySummary,
-  toSessionListItems,
-  type HistorySummary,
-  type SessionListItem,
-} from '../sessionSummary'
 
 export interface HistoryData {
   loading: boolean
-  summary: HistorySummary
-  items: SessionListItem[]
   sessions: WorkoutSession[]
-}
-
-const EMPTY_SUMMARY: HistorySummary = {
-  totalWorkouts: 0,
-  weeklyWorkouts: 0,
-  totalMinutes: 0,
 }
 
 /**
  * Carrega o histórico real (somente sessões concluídas) do IndexedDB.
  *
- * Devolve tanto os itens prontos para a lista quanto as sessões completas, para
- * a tela de detalhes consultar as séries exercício a exercício.
+ * O calendário e os indicadores são derivados das sessões completas na própria
+ * página (`historyCalendar`), permanecendo funções puras e testáveis.
  */
 export function useHistoryData(): HistoryData {
   const [state, setState] = useState<HistoryData>({
     loading: true,
-    summary: EMPTY_SUMMARY,
-    items: [],
     sessions: [],
   })
 
@@ -40,14 +24,7 @@ export function useHistoryData(): HistoryData {
 
     void listCompletedSessions()
       .then((sessions) => {
-        if (cancelled) return
-        const now = Date.now()
-        setState({
-          loading: false,
-          summary: buildHistorySummary(sessions, now),
-          items: toSessionListItems(sessions),
-          sessions,
-        })
+        if (!cancelled) setState({ loading: false, sessions })
       })
       .catch(() => {
         if (!cancelled) setState((previous) => ({ ...previous, loading: false }))

@@ -34,8 +34,10 @@ histórico fica no próprio dispositivo.
   exercício, **demonstra o movimento** do panda (com pausa e repetição),
   orienta postura e respiração, avisa sobre erros comuns e comemora o treino
   concluído.
-- **Histórico local** — treinos concluídos, séries por exercício, duração e
-  resumo semanal, salvos no IndexedDB do dispositivo.
+- **Histórico com calendário** — calendário mensal dos treinos concluídos,
+  indicadores de total, sequência de dias e treinos no mês, além dos detalhes
+  de cada sessão (exercícios, séries, duração e resultados), salvos no
+  IndexedDB do dispositivo.
 - **Instalação como PWA** — "Adicionar à tela inicial" abre o app em modo
   `standalone`.
 - **Funcionamento offline** — após o primeiro carregamento/instalação, o app
@@ -146,3 +148,4 @@ A fonte de verdade do projeto está em `docs/`:
 - [`docs/05-release-preparation.md`](docs/05-release-preparation.md) — auditoria e preparação do primeiro lançamento.
 - [`docs/06-panda-personal-trainer.md`](docs/06-panda-personal-trainer.md) — feature de mascote panda como personal trainer.
 - [`docs/07-panda-personal-trainer-implementation.md`](docs/07-panda-personal-trainer-implementation.md) — implementação do Panda Personal Trainer (rig, demonstrações, integração e testes).
+- [`docs/08-workout-history.md`](docs/08-workout-history.md) — histórico com calendário mensal, indicadores e regras de contagem.
