@@ -1,14 +1,21 @@
 import { workouts } from '../features/workouts/data/workouts.data'
+import * as customRepository from '../features/workouts/data/customWorkoutRepository'
 import * as repository from '../features/workouts/data/workoutRepository'
-import type { EngineResult, Workout, WorkoutSession } from '../features/workouts/domain/types'
+import type {
+  CustomWorkout,
+  EngineResult,
+  Workout,
+  WorkoutSession,
+} from '../features/workouts/domain/types'
 import { startWorkout, tick, type StartWorkoutOptions } from '../features/workouts/domain/workoutEngine'
 
 /**
  * Camada de acesso a dados.
  *
- * Combina duas responsabilidades:
+ * Combina três responsabilidades:
  *
  * - Catálogo: consultas síncronas aos treinos estáticos (Home e tela de treinos).
+ * - Treinos personalizados: CRUD dos treinos criados pelo usuário.
  * - Sessões: operações assíncronas que orquestram o motor (`workoutEngine`) e a
  *   persistência (`workoutRepository`). É o único ponto que liga os dois.
  */
@@ -19,6 +26,45 @@ export function getWorkouts(): Workout[] {
 
 export function getWorkoutById(id: string): Workout | undefined {
   return workouts.find((workout) => workout.id === id)
+}
+
+/**
+ * Resolve um treino pelo id — preset (`A`/`B`) ou personalizado.
+ *
+ * É o ponto único de resolução usado pela execução: carregar a tela, iniciar a
+ * sessão e reconciliar uma sessão em andamento precisam enxergar os dois tipos
+ * de treino, ou um treino personalizado ficaria inacessível ou com o
+ * cronômetro congelado ao recarregar.
+ */
+export async function resolveWorkout(id: string): Promise<Workout | undefined> {
+  const preset = getWorkoutById(id)
+  if (preset) return preset
+
+  return (await customRepository.getCustomWorkout(id)) ?? undefined
+}
+
+/* -------------------------------------------------------------------------- */
+/* Treinos personalizados                                                      */
+/* -------------------------------------------------------------------------- */
+
+/** Lista os treinos personalizados salvos, mais recentes primeiro. */
+export function getCustomWorkouts(): Promise<CustomWorkout[]> {
+  return customRepository.listCustomWorkouts()
+}
+
+/** Recupera um treino personalizado pelo id. */
+export function getCustomWorkoutById(id: string): Promise<CustomWorkout | null> {
+  return customRepository.getCustomWorkout(id)
+}
+
+/** Insere ou atualiza um treino personalizado. */
+export function saveCustomWorkout(workout: CustomWorkout): Promise<void> {
+  return customRepository.saveCustomWorkout(workout)
+}
+
+/** Remove um treino personalizado. */
+export function deleteCustomWorkout(id: string): Promise<void> {
+  return customRepository.deleteCustomWorkout(id)
 }
 
 /**
@@ -45,11 +91,11 @@ export type WorkoutModeLoad =
 export async function loadWorkoutMode(workoutId: string | undefined): Promise<WorkoutModeLoad> {
   const recovered = await recoverWorkoutSession()
   if (recovered) {
-    const workout = getWorkoutById(recovered.session.workoutId)
+    const workout = await resolveWorkout(recovered.session.workoutId)
     if (workout) return { status: 'ready', workout, session: recovered.session }
   }
 
-  const requested = workoutId ? getWorkoutById(workoutId) : undefined
+  const requested = workoutId ? await resolveWorkout(workoutId) : undefined
   if (!requested) return { status: 'missing' }
 
   return { status: 'prepare', workout: requested }
@@ -64,7 +110,7 @@ export async function startWorkoutSession(
   workoutId: string,
   options: StartWorkoutOptions = {},
 ): Promise<EngineResult> {
-  const workout = getWorkoutById(workoutId)
+  const workout = await resolveWorkout(workoutId)
   if (!workout) {
     throw new Error(`Treino "${workoutId}" não encontrado.`)
   }
@@ -119,7 +165,7 @@ export async function recoverWorkoutSession(now: number = Date.now()): Promise<E
   const active = await repository.getActiveSession()
   if (!active) return null
 
-  const workout = getWorkoutById(active.workoutId)
+  const workout = await resolveWorkout(active.workoutId)
   if (!workout) {
     return { session: active, events: [] }
   }

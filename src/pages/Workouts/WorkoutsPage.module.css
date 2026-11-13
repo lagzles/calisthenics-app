@@ -4,6 +4,11 @@
   gap: var(--space-5);
 }
 
+.presetsTitle {
+  font-size: var(--fs-xl);
+  letter-spacing: -0.01em;
+}
+
 .list {
   display: flex;
   flex-direction: column;

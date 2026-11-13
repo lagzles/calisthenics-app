@@ -5,7 +5,7 @@ import { Card } from '../../components/ui/Card'
 import { ExerciseIllustration } from '../../components/ui/ExerciseIllustration'
 import { ArrowLeftIcon, ClockIcon, LayersIcon, PlayIcon, TargetIcon } from '../../components/ui/icons'
 import type { Workout } from '../../features/workouts/domain/types'
-import { describeExerciseTarget } from '../../features/workouts/format'
+import { describeExerciseTarget, describeWorkoutLabel } from '../../features/workouts/format'
 import { countTotalSets } from '../../features/workouts/domain/workoutSelectors'
 import { PandaDemoPlayer } from '../../features/panda/components/PandaDemoPlayer'
 import { getExercisePandaDemo } from '../../features/panda/domain/pandaCatalog'
@@ -53,7 +53,7 @@ export function PreparationScreen({ workout, onStart, onBack }: PreparationScree
       </button>
 
       <Card variant="accent" className={styles.hero}>
-        <Badge variant="primary">Treino {workout.id}</Badge>
+        <Badge variant="primary">{describeWorkoutLabel(workout)}</Badge>
         <div>
           <h1 className={styles.heroName}>{workout.name}</h1>
           <p className={styles.heroGoal}>{workout.description}</p>

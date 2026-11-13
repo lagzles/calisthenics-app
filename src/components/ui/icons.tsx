@@ -106,6 +106,50 @@ export function ChevronRightIcon(props: IconProps) {
   )
 }
 
+export function ChevronUpIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M6 14.4 12 8.4l6 6" />
+    </Svg>
+  )
+}
+
+export function ChevronDownIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M6 9.6 12 15.6l6-6" />
+    </Svg>
+  )
+}
+
+export function PlusIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Svg>
+  )
+}
+
+export function TrashIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4.6 6.8h14.8" />
+      <path d="M9.4 6.8V4.9a1.1 1.1 0 0 1 1.1-1.1h3a1.1 1.1 0 0 1 1.1 1.1v1.9" />
+      <path d="M6.6 6.8 7.4 19a1.2 1.2 0 0 0 1.2 1.1h6.8a1.2 1.2 0 0 0 1.2-1.1l.8-12.2" />
+      <path d="M10.4 10.6v5.8M13.6 10.6v5.8" />
+    </Svg>
+  )
+}
+
+export function EditIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4.4 19.6h4l10-10a2 2 0 0 0 0-2.8l-1.2-1.2a2 2 0 0 0-2.8 0l-10 10v4Z" />
+      <path d="M14 6 18 10" />
+    </Svg>
+  )
+}
+
 export function ArrowRightIcon(props: IconProps) {
   return (
     <Svg {...props}>

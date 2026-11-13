@@ -7,6 +7,7 @@ import { ExerciseIllustration } from '../../components/ui/ExerciseIllustration'
 import { ChevronRightIcon, ClockIcon, LayersIcon, PlayIcon } from '../../components/ui/icons'
 import { getWorkouts } from '../../services/workoutService'
 import { formatMinutes } from '../../utils/format'
+import { CustomWorkoutsSection } from './CustomWorkoutsSection'
 import styles from './WorkoutsPage.module.css'
 
 export function WorkoutsPage() {
@@ -21,6 +22,10 @@ export function WorkoutsPage() {
   return (
     <div className={styles.page}>
       <PageHeader title="Treinos" subtitle="Consulte os detalhes ou comece a treinar." />
+
+      <CustomWorkoutsSection />
+
+      <h2 className={styles.presetsTitle}>Treinos do app</h2>
 
       <ul className={styles.list}>
         {workouts.map((workout) => (
