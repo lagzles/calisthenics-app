@@ -16,6 +16,12 @@
 /* Catálogo                                                                    */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Identificadores dos treinos predefinidos (presets) do catálogo estático.
+ *
+ * `Workout.id` é livre (ver `CustomWorkout`), mas recomendação e resumo da Home
+ * continuam restritos a estes dois valores.
+ */
 export type WorkoutId = 'A' | 'B'
 
 /**
@@ -82,12 +88,38 @@ export interface Exercise {
 }
 
 export interface Workout {
-  id: WorkoutId
+  /**
+   * Identificador do treino. Os presets usam `'A' | 'B'` (`WorkoutId`); os
+   * treinos personalizados usam ids gerados (`custom-…`).
+   */
+  id: string
   name: string
   /** Objetivo/descrição curta do treino. */
   description: string
   estimatedMinutes: number
   exercises: Exercise[]
+  /**
+   * Descansa após a última série de um exercício, antes do próximo.
+   *
+   * A duração usada é o `restDuration` do exercício que acabou. Ausente nos
+   * treinos predefinidos (A e B), cuja convenção é ir direto para a etapa
+   * `completed` e aguardar o avanço manual — por isso o padrão é `false`.
+   * Presente nos treinos personalizados.
+   */
+  restBetweenExercises?: boolean
+}
+
+/**
+ * Treino criado pelo usuário a partir da biblioteca de exercícios.
+ *
+ * É um `Workout` — o motor de execução não distingue preset de personalizado —
+ * acrescido da configuração escolhida no editor e dos metadados de persistência.
+ */
+export interface CustomWorkout extends Workout {
+  /** Limite de exercícios configurado no editor (não a quantidade atual). */
+  exerciseCount: number
+  createdAt: string
+  updatedAt: string
 }
 
 /* -------------------------------------------------------------------------- */
@@ -135,6 +167,13 @@ export interface CompletedSet {
 
 export interface ExerciseProgress {
   exerciseId: string
+  /**
+   * Nome do exercício no momento da execução.
+   *
+   * Preserva o texto do Histórico para treinos personalizados, que podem ser
+   * editados ou excluídos depois. Ausente em sessões gravadas antes deste campo.
+   */
+  exerciseName?: string
   completedSets: number
   /** Séries encerradas antecipadamente sem contar como concluídas. */
   skippedSets?: number

@@ -139,7 +139,14 @@ export function buildTimerViewModel(snapshot: SessionSnapshot): TimerViewModel {
 
   if (isResting) {
     timerText = formatTimer(snapshot.remainingTime)
-    message = `Recupere e prepare-se para a série ${nextSet}.`
+    // Na última série do exercício o descanso antecede o próximo exercício.
+    const isLastSet = currentSet >= totalSets
+    const hasNextExercise = snapshot.exerciseIndex < snapshot.exerciseCount - 1
+
+    message =
+      isLastSet && hasNextExercise
+        ? 'Exercício concluído. Descanse antes do próximo.'
+        : `Recupere e prepare-se para a série ${nextSet}.`
   } else if (snapshot.phase === 'completed') {
     message = 'Exercício concluído. Avance para o próximo.'
   } else if (isTimed) {

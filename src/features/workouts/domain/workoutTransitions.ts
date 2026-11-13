@@ -32,6 +32,17 @@ export function createSessionId(): string {
   return `session-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
 }
 
+/**
+ * Gera o id de um treino personalizado.
+ *
+ * O prefixo `custom-` mantém o id reconhecível e garante que ele nunca colida
+ * com os ids dos presets (`'A'`/`'B'`). Só caracteres seguros para URL, pois o
+ * id aparece em `/treino/:workoutId`.
+ */
+export function createCustomWorkoutId(): string {
+  return `custom-${createSessionId()}`
+}
+
 /** Duração de treino efetivo (segundos), descontando o tempo em pausa. */
 export function computeElapsedSeconds(session: WorkoutSession, atMs: number): number {
   const pausedMs =
@@ -69,7 +80,15 @@ export function beginSetWork(
   })
 }
 
-/** Inicia a fase de descanso (após uma série que não é a última). */
+/**
+ * Inicia o descanso após uma série.
+ *
+ * Usado tanto entre séries quanto entre exercícios (quando o treino declara
+ * `restBetweenExercises`). O tipo do descanso não é armazenado na sessão: é
+ * derivado de `currentSet >= exercise.sets`, ou seja, o descanso iniciado depois
+ * da última série é o descanso entre exercícios. Assim o esquema persistido não
+ * muda e sessões antigas continuam válidas.
+ */
 export function beginRest(
   draft: WorkoutSession,
   exercise: Exercise,
@@ -91,15 +110,62 @@ export function beginRest(
   })
 }
 
-/** Encerra o descanso e inicia a próxima série. */
+/** Indica se o descanso em andamento é o que precede o próximo exercício. */
+export function isRestBetweenExercises(draft: WorkoutSession, exercise: Exercise): boolean {
+  return draft.currentSet >= exercise.sets
+}
+
+/**
+ * Indica se a última série do exercício atual deve ser seguida de descanso antes
+ * do próximo exercício.
+ *
+ * Condições: o treino declara `restBetweenExercises`, o descanso configurado é
+ * maior que zero e **não** é o último exercício do treino (não há descanso
+ * inútil depois da última série do treino).
+ */
+export function startsExerciseRest(
+  draft: WorkoutSession,
+  workout: Workout,
+  exercise: Exercise,
+): boolean {
+  if (!workout.restBetweenExercises) return false
+  if (exercise.restDuration <= 0) return false
+  return draft.currentExerciseIndex < workout.exercises.length - 1
+}
+
+/**
+ * Indica se, sem descanso a fazer, o treino deve avançar sozinho para o próximo
+ * exercício (em vez de parar na etapa `completed` esperando o usuário).
+ *
+ * Só acontece quando o treino opta por descanso entre exercícios mas o exercício
+ * atual não tem descanso configurado: não há nada a esperar, então a transição é
+ * imediata — mesma convenção do encadeamento entre séries com `restDuration: 0`.
+ */
+function shouldChainNextExercise(
+  draft: WorkoutSession,
+  workout: Workout,
+  exercise: Exercise,
+): boolean {
+  if (!workout.restBetweenExercises) return false
+  if (exercise.restDuration > 0) return false
+  return draft.currentExerciseIndex < workout.exercises.length - 1
+}
+
+/**
+ * Encerra o descanso e continua o treino.
+ *
+ * - Descanso entre séries → inicia a próxima série do mesmo exercício.
+ * - Descanso entre exercícios → avança para o próximo exercício, preservando o
+ *   progresso já registrado (mesma convenção de `advanceExercise`).
+ */
 export function beginNextSetAfterRest(
   draft: WorkoutSession,
+  workout: Workout,
   exercise: Exercise,
   atMs: number,
   events: WorkoutEvent[],
 ): void {
   const restingSet = draft.currentSet
-  draft.currentSet += 1
 
   events.push({
     type: 'rest-ended',
@@ -110,7 +176,37 @@ export function beginNextSetAfterRest(
     at: atMs,
   })
 
+  if (isRestBetweenExercises(draft, exercise)) {
+    beginExercise(draft, workout, draft.currentExerciseIndex + 1, atMs, events)
+    return
+  }
+
+  draft.currentSet += 1
   beginSetWork(draft, exercise, atMs, events)
+}
+
+/**
+ * Marca o exercício atual como concluído, **sem** alterar a etapa atual.
+ *
+ * Separado de `completeCurrentExercise` porque o descanso entre exercícios
+ * precisa registrar a conclusão e ainda manter a fase de descanso.
+ */
+function markExerciseCompleted(
+  draft: WorkoutSession,
+  atMs: number,
+  events: WorkoutEvent[],
+): void {
+  const progress = draft.exercisesProgress[draft.currentExerciseIndex]
+  progress.completed = true
+  progress.completedAt = toIso(atMs)
+
+  events.push({
+    type: 'exercise-completed',
+    phase: draft.currentPhase,
+    exerciseIndex: draft.currentExerciseIndex,
+    exerciseId: progress.exerciseId,
+    at: atMs,
+  })
 }
 
 /**
@@ -161,6 +257,20 @@ export function concludeCurrentSet(
     return
   }
 
+  // Última série: descansa antes do próximo exercício, quando o treino pede.
+  if (startsExerciseRest(draft, workout, exercise)) {
+    markExerciseCompleted(draft, atMs, events)
+    beginRest(draft, exercise, atMs, events)
+    return
+  }
+
+  // Treino encadeado, mas sem descanso configurado: segue direto.
+  if (shouldChainNextExercise(draft, workout, exercise)) {
+    markExerciseCompleted(draft, atMs, events)
+    beginExercise(draft, workout, draft.currentExerciseIndex + 1, atMs, events)
+    return
+  }
+
   completeCurrentExercise(draft, workout, atMs, events)
 }
 
@@ -202,6 +312,20 @@ export function skipCurrentSet(
     return
   }
 
+  // Última série: descansa antes do próximo exercício, quando o treino pede.
+  if (startsExerciseRest(draft, workout, exercise)) {
+    markExerciseCompleted(draft, atMs, events)
+    beginRest(draft, exercise, atMs, events)
+    return
+  }
+
+  // Treino encadeado, mas sem descanso configurado: segue direto.
+  if (shouldChainNextExercise(draft, workout, exercise)) {
+    markExerciseCompleted(draft, atMs, events)
+    beginExercise(draft, workout, draft.currentExerciseIndex + 1, atMs, events)
+    return
+  }
+
   completeCurrentExercise(draft, workout, atMs, events)
 }
 
@@ -216,22 +340,12 @@ export function completeCurrentExercise(
   atMs: number,
   events: WorkoutEvent[],
 ): void {
-  const progress = draft.exercisesProgress[draft.currentExerciseIndex]
-  progress.completed = true
-  progress.completedAt = toIso(atMs)
-
   draft.currentPhase = 'completed'
   draft.phaseStartedAt = toIso(atMs)
   draft.phaseEndsAt = null
   draft.remainingTime = 0
 
-  events.push({
-    type: 'exercise-completed',
-    phase: 'completed',
-    exerciseIndex: draft.currentExerciseIndex,
-    exerciseId: progress.exerciseId,
-    at: atMs,
-  })
+  markExerciseCompleted(draft, atMs, events)
 
   if (draft.currentExerciseIndex >= workout.exercises.length - 1) {
     completeSession(draft, atMs, events)

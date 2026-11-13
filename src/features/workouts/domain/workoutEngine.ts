@@ -75,6 +75,7 @@ export function startWorkout(workout: Workout, options: StartWorkoutOptions = {}
 
   const exercisesProgress: ExerciseProgress[] = workout.exercises.map((exercise) => ({
     exerciseId: exercise.id,
+    exerciseName: exercise.name,
     completedSets: 0,
     sets: [],
     completed: false,
@@ -159,7 +160,7 @@ export function tick(session: WorkoutSession, workout: Workout, now: number): En
     if (draft.currentPhase === 'work') {
       concludeCurrentSet(draft, workout, exercise, boundaryMs, events)
     } else if (draft.currentPhase === 'rest') {
-      beginNextSetAfterRest(draft, exercise, boundaryMs, events)
+      beginNextSetAfterRest(draft, workout, exercise, boundaryMs, events)
     }
   }
 
@@ -231,7 +232,7 @@ export function skipRest(session: WorkoutSession, workout: Workout, now: number)
   const events: WorkoutEvent[] = []
   const exercise = workout.exercises[draft.currentExerciseIndex]
 
-  beginNextSetAfterRest(draft, exercise, now, events)
+  beginNextSetAfterRest(draft, workout, exercise, now, events)
   draft.remainingTime = remainingForSession(draft, now)
 
   return { session: draft, events }

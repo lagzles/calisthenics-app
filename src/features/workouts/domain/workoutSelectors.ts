@@ -36,22 +36,49 @@ export function countTotalSets(workout: Workout): number {
 }
 
 /**
+ * Tempo médio (segundos) considerado para uma repetição na estimativa.
+ *
+ * Aproximação de apresentação: exercícios por repetições não têm duração
+ * previsível, mas sem esta constante o treino seria exibido como "0 min".
+ */
+export const SECONDS_PER_REPETITION = 3
+
+/**
  * Duração estimada (segundos) de um exercício.
  *
- * Regra de produto: `workDuration` por série + `restDuration` entre séries.
- * **Não** há descanso após a última série de cada exercício. Exercícios por
- * repetições não têm duração previsível e devolvem `0`.
+ * Regra de produto: `workDuration` (ou repetições × `SECONDS_PER_REPETITION`)
+ * por série + `restDuration` entre séries. **Não** há descanso após a última
+ * série de cada exercício.
  */
 export function estimateExerciseSeconds(exercise: Exercise): number {
-  if (exercise.executionType !== 'timed' || !exercise.workDuration) return 0
-  const work = exercise.sets * exercise.workDuration
+  const workPerSet =
+    exercise.executionType === 'timed'
+      ? exercise.workDuration
+      : exercise.repetitions
+        ? exercise.repetitions * SECONDS_PER_REPETITION
+        : undefined
+  if (!workPerSet) return 0
+
+  const work = exercise.sets * workPerSet
   const rests = Math.max(0, exercise.sets - 1) * exercise.restDuration
   return work + rests
 }
 
 /** Duração estimada (segundos) de um treino inteiro. */
 export function estimateWorkoutSeconds(workout: Workout): number {
-  return workout.exercises.reduce((total, exercise) => total + estimateExerciseSeconds(exercise), 0)
+  const exercises = workout.exercises.reduce(
+    (total, exercise) => total + estimateExerciseSeconds(exercise),
+    0,
+  )
+
+  if (!workout.restBetweenExercises) return exercises
+
+  // Descanso entre exercícios: o do exercício que acabou, exceto no último.
+  const transitions = workout.exercises
+    .slice(0, -1)
+    .reduce((total, exercise) => total + exercise.restDuration, 0)
+
+  return exercises + transitions
 }
 
 /** Duração estimada (minutos, arredondada) de um treino inteiro. */
