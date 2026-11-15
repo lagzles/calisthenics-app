@@ -1,4 +1,21 @@
-import type { Exercise } from './domain/types'
+import type { Exercise, Workout, WorkoutId } from './domain/types'
+
+const PRESET_IDS: readonly string[] = ['A', 'B'] satisfies WorkoutId[]
+
+/** Indica se o id pertence a um treino predefinido do catálogo. */
+export function isPresetWorkoutId(id: string): id is WorkoutId {
+  return PRESET_IDS.includes(id)
+}
+
+/**
+ * Nome de exibição do treino.
+ *
+ * Presets usam a marca curta ("Treino A"); treinos personalizados usam o nome
+ * escolhido pelo usuário, já que o id gerado não é legível.
+ */
+export function describeWorkoutLabel(workout: Workout): string {
+  return isPresetWorkoutId(workout.id) ? `Treino ${workout.id}` : workout.name
+}
 
 /**
  * Descreve a carga de um exercício para exibição: séries × tempo ou repetições.

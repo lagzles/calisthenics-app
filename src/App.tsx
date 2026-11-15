@@ -3,6 +3,7 @@ import { AppLayout } from './components/layout/AppLayout'
 import { HistoryPage } from './pages/History/HistoryPage'
 import { HomePage } from './pages/Home/HomePage'
 import { NotFoundPage } from './pages/NotFound/NotFoundPage'
+import { CustomWorkoutEditorPage } from './pages/Workouts/CustomWorkoutEditorPage'
 import { WorkoutDetailsPage } from './pages/Workouts/WorkoutDetailsPage'
 import { WorkoutsPage } from './pages/Workouts/WorkoutsPage'
 import { WorkoutModePage } from './pages/WorkoutMode/WorkoutModePage'
@@ -22,6 +23,8 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="treinos" element={<WorkoutsPage />} />
+          <Route path="treinos/personalizados/novo" element={<CustomWorkoutEditorPage />} />
+          <Route path="treinos/personalizados/:id/editar" element={<CustomWorkoutEditorPage />} />
           <Route path="treinos/:workoutId" element={<WorkoutDetailsPage />} />
           <Route path="historico" element={<HistoryPage />} />
           <Route path="*" element={<NotFoundPage />} />

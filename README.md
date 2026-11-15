@@ -38,6 +38,12 @@ histórico fica no próprio dispositivo.
   indicadores de total, sequência de dias e treinos no mês, além dos detalhes
   de cada sessão (exercícios, séries, duração e resultados), salvos no
   IndexedDB do dispositivo.
+- **Treinos personalizados** — monte seus próprios treinos com os exercícios do
+  app. **Cada exercício** tem o seu próprio modo (**por tempo** ou **por
+  repetições**), alvo, número de séries e descanso, então um mesmo treino pode
+  misturar tempo e repetições. Dá para reordenar, editar e excluir. O descanso
+  vale entre as séries e também entre um exercício e o próximo; os treinos ficam
+  salvos no dispositivo e executam pelo mesmo motor dos treinos A e B.
 - **Instalação como PWA** — "Adicionar à tela inicial" abre o app em modo
   `standalone`.
 - **Funcionamento offline** — após o primeiro carregamento/instalação, o app
@@ -149,3 +155,4 @@ A fonte de verdade do projeto está em `docs/`:
 - [`docs/06-panda-personal-trainer.md`](docs/06-panda-personal-trainer.md) — feature de mascote panda como personal trainer.
 - [`docs/07-panda-personal-trainer-implementation.md`](docs/07-panda-personal-trainer-implementation.md) — implementação do Panda Personal Trainer (rig, demonstrações, integração e testes).
 - [`docs/08-workout-history.md`](docs/08-workout-history.md) — histórico com calendário mensal, indicadores e regras de contagem.
+- [`docs/09-custom-workouts.md`](docs/09-custom-workouts.md) — treinos personalizados (modelo, editor, persistência v2 e limitações).

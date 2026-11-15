@@ -12,12 +12,19 @@ import type { WorkoutSession } from '../domain/types'
  */
 
 const DB_NAME = 'calisthenics-app'
-const DB_VERSION = 1
+const DB_VERSION = 2
 const SESSIONS_STORE = 'workoutSessions'
+const CUSTOM_WORKOUTS_STORE = 'customWorkouts'
 
 let databasePromise: Promise<IDBDatabase> | null = null
 
-/** Migrações, aplicadas conforme a versão anterior do banco. */
+/**
+ * Migrações, aplicadas conforme a versão anterior do banco.
+ *
+ * Regra: apenas **acrescentar** blocos `if (oldVersion < N)` com uma nova versão
+ * do banco. Blocos de versões publicadas nunca são editados, para que os dados
+ * existentes continuem legíveis.
+ */
 function upgradeDatabase(
   database: IDBDatabase,
   transaction: IDBTransaction,
@@ -30,6 +37,13 @@ function upgradeDatabase(
     store.createIndex('status', 'status', { unique: false })
     store.createIndex('startedAt', 'startedAt', { unique: false })
     store.createIndex('finishedAt', 'finishedAt', { unique: false })
+  }
+
+  if (oldVersion < 2) {
+    // Treinos personalizados: definições de treino, separadas das sessões
+    // executadas (`SESSIONS_STORE`), que são registros de histórico.
+    const store = database.createObjectStore(CUSTOM_WORKOUTS_STORE, { keyPath: 'id' })
+    store.createIndex('updatedAt', 'updatedAt', { unique: false })
   }
 }
 
@@ -63,14 +77,14 @@ export function closeDatabase(): void {
   void current.then((database) => database.close()).catch(() => undefined)
 }
 
-function requestToPromise<T>(request: IDBRequest<T>): Promise<T> {
+export function requestToPromise<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     request.onsuccess = () => resolve(request.result)
     request.onerror = () => reject(request.error ?? new Error('Erro no IndexedDB.'))
   })
 }
 
-function transactionToPromise(transaction: IDBTransaction): Promise<void> {
+export function transactionToPromise(transaction: IDBTransaction): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     transaction.oncomplete = () => resolve()
     transaction.onerror = () =>
@@ -80,13 +94,21 @@ function transactionToPromise(transaction: IDBTransaction): Promise<void> {
   })
 }
 
-async function withStore<T>(
+/**
+ * Executa uma operação sobre um object store, na conexão compartilhada.
+ *
+ * Exportado para que outros repositórios (ex.: treinos personalizados) reusem a
+ * **mesma** conexão — abrir o banco em mais de um lugar faria uma futura
+ * migração de versão bloquear (`onblocked`).
+ */
+export async function withStore<T>(
+  storeName: string,
   mode: IDBTransactionMode,
   run: (store: IDBObjectStore) => Promise<T>,
 ): Promise<T> {
   const database = await openDatabase()
-  const transaction = database.transaction(SESSIONS_STORE, mode)
-  const store = transaction.objectStore(SESSIONS_STORE)
+  const transaction = database.transaction(storeName, mode)
+  const store = transaction.objectStore(storeName)
   const result = await run(store)
   if (mode === 'readwrite') {
     await transactionToPromise(transaction)
@@ -104,14 +126,14 @@ function byFinishedAtDesc(a: WorkoutSession, b: WorkoutSession): number {
 
 /** Insere ou atualiza uma sessão. */
 export function saveSession(session: WorkoutSession): Promise<void> {
-  return withStore('readwrite', async (store) => {
+  return withStore(SESSIONS_STORE, 'readwrite', async (store) => {
     await requestToPromise(store.put(session))
   })
 }
 
 /** Recupera uma sessão pelo id. */
 export async function getSession(id: string): Promise<WorkoutSession | null> {
-  const result = await withStore('readonly', (store) =>
+  const result = await withStore(SESSIONS_STORE, 'readonly', (store) =>
     requestToPromise<WorkoutSession | undefined>(store.get(id)),
   )
   return result ?? null
@@ -119,7 +141,7 @@ export async function getSession(id: string): Promise<WorkoutSession | null> {
 
 /** Lista todas as sessões, mais recentes primeiro. */
 export async function listSessions(): Promise<WorkoutSession[]> {
-  const all = await withStore('readonly', (store) =>
+  const all = await withStore(SESSIONS_STORE, 'readonly', (store) =>
     requestToPromise<WorkoutSession[]>(store.getAll()),
   )
   return all.sort(byStartedAtDesc)
@@ -142,14 +164,14 @@ export async function getActiveSession(): Promise<WorkoutSession | null> {
 
 /** Remove uma sessão. */
 export function deleteSession(id: string): Promise<void> {
-  return withStore('readwrite', async (store) => {
+  return withStore(SESSIONS_STORE, 'readwrite', async (store) => {
     await requestToPromise(store.delete(id))
   })
 }
 
 /** Remove todas as sessões (histórico). */
 export function clearSessions(): Promise<void> {
-  return withStore('readwrite', async (store) => {
+  return withStore(SESSIONS_STORE, 'readwrite', async (store) => {
     await requestToPromise(store.clear())
   })
 }

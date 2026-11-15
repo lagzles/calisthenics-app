@@ -21,7 +21,11 @@ import { PandaDemoPlayer } from '../../features/panda/components/PandaDemoPlayer
 import { PandaMascot } from '../../features/panda/components/PandaMascot'
 import { getExercisePandaDemo } from '../../features/panda/domain/pandaCatalog'
 import type { Workout, WorkoutEvent, WorkoutSession } from '../../features/workouts/domain/types'
-import { describeExerciseTarget, describeModality } from '../../features/workouts/format'
+import {
+  describeExerciseTarget,
+  describeModality,
+  describeWorkoutLabel,
+} from '../../features/workouts/format'
 import { useWorkoutSession } from '../../features/workouts/hooks/useWorkoutSession'
 import {
   buildTimerViewModel,
@@ -152,7 +156,7 @@ export function ActiveWorkout({ workout, initialSession }: ActiveWorkoutProps) {
           <span>Lista</span>
         </button>
 
-        <span className={styles.topTitle}>Treino {workout.id}</span>
+        <span className={styles.topTitle}>{describeWorkoutLabel(workout)}</span>
 
         <div className={styles.topActions}>
           <button type="button" className={styles.topButton} onClick={togglePause}>
@@ -599,9 +603,7 @@ function CompletionScreen({ workout, session }: CompletionScreenProps) {
 
         <div>
           <h1 className={styles.completionTitle}>Treino concluído!</h1>
-          <p className={styles.completionName}>
-            Treino {workout.id} · {workout.name}
-          </p>
+          <p className={styles.completionName}>{describeWorkoutLabel(workout)}</p>
         </div>
 
         <div className={styles.completionStats}>

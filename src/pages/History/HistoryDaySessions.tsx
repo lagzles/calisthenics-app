@@ -1,7 +1,8 @@
 import { Card } from '../../components/ui/Card'
-import { CheckIcon } from '../../components/ui/icons'
+import { CheckIcon, DumbbellIcon } from '../../components/ui/icons'
 import { PandaMascot } from '../../features/panda/components/PandaMascot'
 import type { WorkoutSession } from '../../features/workouts/domain/types'
+import { isPresetWorkoutId } from '../../features/workouts/format'
 import { dayLabel, monthLabel, type CalendarMonth } from '../../features/workouts/historyCalendar'
 import { getWorkoutById } from '../../services/workoutService'
 import { formatDuration, formatSeconds, formatTime } from '../../utils/format'
@@ -95,11 +96,12 @@ export function HistoryDaySessions({
 function SessionCard({ session }: { session: WorkoutSession }) {
   const workout = getWorkoutById(session.workoutId)
   const finishedAt = session.finishedAt ?? session.startedAt
+  const isPreset = isPresetWorkoutId(session.workoutId)
 
   return (
     <Card className={styles.sessionCard}>
       <header className={styles.sessionHead}>
-        <span className={styles.mark}>{session.workoutId}</span>
+        <span className={styles.mark}>{isPreset ? session.workoutId : <DumbbellIcon size={18} />}</span>
 
         <div className={styles.sessionIdentity}>
           <h3 className={styles.sessionName}>{session.workoutName}</h3>
@@ -129,7 +131,7 @@ function SessionCard({ session }: { session: WorkoutSession }) {
               <li key={progress.exerciseId} className={styles.exercise}>
                 <div className={styles.exerciseHead}>
                   <span className={styles.exerciseName}>
-                    {exercise?.name ?? progress.exerciseId}
+                    {exercise?.name ?? progress.exerciseName ?? progress.exerciseId}
                   </span>
                   <span className={styles.exerciseSets}>
                     {progress.completedSets}
